@@ -22,6 +22,32 @@ class _LoginScreenState extends State<LoginScreen> {
 
   var _session, _uri;
 
+  @override
+  void initState() {
+    super.initState();
+
+    connector.on(
+        'connect',
+        (session) => setState(
+              () {
+                _session = _session;
+                print("Connected");
+                print(session);
+              },
+            ));
+    connector.on(
+        'session_update',
+        (payload) => setState(() {
+              _session = payload;
+              print(payload.toString());
+            }));
+    connector.on(
+        'disconnect',
+        (payload) => setState(() {
+              _session = null;
+            }));
+  }
+
   loginUsingMetamask(BuildContext context) async {
     if (!connector.connected) {
       try {
@@ -36,6 +62,12 @@ class _LoginScreenState extends State<LoginScreen> {
         print(err);
       }
     }
+  }
+
+  @override
+  void dispose() {
+    connector.killSession();
+    super.dispose();
   }
 
   @override
