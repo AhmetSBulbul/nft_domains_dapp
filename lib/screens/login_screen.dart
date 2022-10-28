@@ -29,38 +29,53 @@ class _LoginScreenState extends State<LoginScreen> {
     var httpClient = Client();
     var ethClient = Web3Client(apiUrl, httpClient);
     final stub = Domains(address: address, client: ethClient);
-    final result = await stub.getOwner('ahmets');
+    final result = await stub.getOwner('testtesst');
     print(result);
 
-    final WalletConnect connector = WalletConnect(
-        bridge: 'https://bridge.walletconnect.org',
-        clientMeta: const PeerMeta(
-            name: 'My App',
-            description: 'An app for converting pictures to NFT',
-            url: 'https://walletconnect.org',
-            icons: [
-              'https://files.gitbook.com/v0/b/gitbook-legacy-files/o/spaces%2F-LJJeCjcLrr53DcT1Ml7%2Favatar.png?alt=media'
-            ]));
+    // final WalletConnect connector = WalletConnect(
+    //     bridge: 'https://bridge.walletconnect.org',
+    //     clientMeta: const PeerMeta(
+    //         name: 'My App',
+    //         description: 'An app for converting pictures to NFT',
+    //         url: 'https://walletconnect.org',
+    //         icons: [
+    //           'https://files.gitbook.com/v0/b/gitbook-legacy-files/o/spaces%2F-LJJeCjcLrr53DcT1Ml7%2Favatar.png?alt=media'
+    //         ]));
 
-    try {
-      var session = await connector.createSession(onDisplayUri: (uri) async {
-        await launchUrlString(uri, mode: LaunchMode.externalApplication);
-      });
-      final contractProvider = EthereumWalletConnectProvider(connector);
-      final ethCredentials =
-          WalletConnectEthereumCredentials(provider: contractProvider);
-      final result2 = await stub.register("testtest",
-          credentials: ethCredentials,
-          transaction: Transaction(
-            from: EthereumAddress.fromHex(session.accounts[0]),
-            to: address,
-            value: EtherAmount.inWei(BigInt.from(0.001)),
-          ));
+    // try {
+    //   var session = await connector.createSession(onDisplayUri: (uri) async {
+    //     print(uri);
+    //     await launchUrlString(uri, mode: LaunchMode.externalApplication);
+    //   });
+    //   final contractProvider =
+    //       EthereumWalletConnectProvider(connector, chainId: 80001);
+    //   final ethCredentials =
+    //       WalletConnectEthereumCredentials(provider: contractProvider);
+    //   print(session.toString());
+    //   // connector.print(session.chainId);
+    //   print(session.accounts.toString());
 
-      print(result2);
-    } catch (exp) {
-      print(exp);
-    }
+    //   // connector.
+    //   final result2 = await stub.register("testtesst",
+    //       credentials: ethCredentials,
+    //       transaction: Transaction(
+    //         from: EthereumAddress.fromHex(session.accounts[0]),
+    //         to: address,
+    //         value:
+    //             EtherAmount.fromUnitAndValue(EtherUnit.finney, BigInt.from(1)),
+    //       ));
+    //   // final result2 = await stub.register("testtest",
+    //   //     credentials: credentials,
+    //   //     transaction: Transaction(
+    //   //         value: EtherAmount.fromUnitAndValue(
+    //   //             EtherUnit.finney, BigInt.from(1))));
+    //   // print(result2);
+
+    //   print(result2);
+    //   // connector.killSession();
+    // } catch (exp) {
+    //   print("Error: ${exp.toString()}");
+    // }
   }
 
   @override
