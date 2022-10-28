@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:nft_domains_dapp/contracts/Domains.g.dart';
+import 'package:nft_domains_dapp/walletProvider/wallet_connect_ethereum_credentials.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
+import 'package:walletconnect_dart/walletconnect_dart.dart';
 import 'package:web3dart/web3dart.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -27,6 +31,36 @@ class _LoginScreenState extends State<LoginScreen> {
     final stub = Domains(address: address, client: ethClient);
     final result = await stub.getOwner('ahmets');
     print(result);
+
+    final WalletConnect connector = WalletConnect(
+        bridge: 'https://bridge.walletconnect.org',
+        clientMeta: const PeerMeta(
+            name: 'My App',
+            description: 'An app for converting pictures to NFT',
+            url: 'https://walletconnect.org',
+            icons: [
+              'https://files.gitbook.com/v0/b/gitbook-legacy-files/o/spaces%2F-LJJeCjcLrr53DcT1Ml7%2Favatar.png?alt=media'
+            ]));
+
+    try {
+      var session = await connector.createSession(onDisplayUri: (uri) async {
+        await launchUrlString(uri, mode: LaunchMode.externalApplication);
+      });
+      final contractProvider = EthereumWalletConnectProvider(connector);
+      final ethCredentials =
+          WalletConnectEthereumCredentials(provider: contractProvider);
+      final result2 = await stub.register("testtest",
+          credentials: ethCredentials,
+          transaction: Transaction(
+            from: EthereumAddress.fromHex(session.accounts[0]),
+            to: address,
+            value: EtherAmount.inWei(BigInt.from(0.001)),
+          ));
+
+      print(result2);
+    } catch (exp) {
+      print(exp);
+    }
   }
 
   @override
