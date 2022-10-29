@@ -8,19 +8,20 @@ import 'package:nft_domains_dapp/features/wallet/wallet_repository.dart';
 import 'login/login.dart';
 
 class App extends StatelessWidget {
-  const App({super.key, required this.walletRepository});
+  App({super.key, required this.walletRepository})
+      : authenticationBloc =
+            AuthenticationBloc(walletRepository: walletRepository);
 
   final WalletRepository walletRepository;
+  final AuthenticationBloc authenticationBloc;
 
   @override
   Widget build(BuildContext context) {
     return RepositoryProvider.value(
         value: walletRepository,
         // TODO: will be AuthBloc
-        child: BlocProvider(
-          create: (_) => AuthenticationBloc(
-            walletRepository: walletRepository,
-          ),
+        child: BlocProvider.value(
+          value: authenticationBloc,
           child: AppView(),
         ));
   }
