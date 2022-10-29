@@ -10,15 +10,14 @@ class WalletConnectEthereumCredentials extends CustomTransactionSender {
   final EthereumWalletConnectProvider provider;
 
   @override
-  Future<EthereumAddress> extractAddress() {
-    // TODO: implement extractAddress
-    throw UnimplementedError();
-  }
+  Future<EthereumAddress> extractAddress() => Future(
+      () => EthereumAddress.fromHex(provider.connector.session.accounts.first));
 
   @override
   Future<String> sendTransaction(Transaction transaction) async {
+    final sender = await extractAddress();
     final hash = await provider.sendTransaction(
-      from: transaction.from!.hex,
+      from: sender.hex,
       to: transaction.to?.hex,
       data: transaction.data,
       gas: transaction.maxGas,

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:walletconnect_dart/walletconnect_dart.dart';
+import 'package:web3dart/web3dart.dart';
+
+import 'entity/wallet_connect_ethereum_credentials.dart';
 
 class WalletRepository {
   final WalletConnect _walletConnector = WalletConnect(
@@ -26,6 +29,12 @@ class WalletRepository {
         debugPrint(e.toString());
       }
     }
+  }
+
+  Credentials getCredentials() {
+    final ethProvider =
+        EthereumWalletConnectProvider(_walletConnector, chainId: 80001);
+    return WalletConnectEthereumCredentials(provider: ethProvider);
   }
 
   Future<void> disconnect() async {
