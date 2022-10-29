@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
-import 'package:nft_domains_dapp/contracts/Domains.g.dart';
+import 'package:nft_domains_dapp/features/domain_service/contract/Domains.g.dart';
+
 import 'package:nft_domains_dapp/features/wallet/entity/wallet_connect_ethereum_credentials.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
