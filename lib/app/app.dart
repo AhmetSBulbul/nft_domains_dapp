@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:nft_domains_dapp/features/wallet/wallet_repository.dart';
 
 import 'login/login.dart';
@@ -25,6 +26,7 @@ class AppView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      theme: _buildTheme(),
       routerConfig: _router,
       title: "NFT Domains",
     );
@@ -39,4 +41,15 @@ class AppView extends StatelessWidget {
       ),
     ],
   );
+
+  ThemeData _buildTheme() {
+    final baseTheme = ThemeData(
+      brightness: Brightness.light,
+      useMaterial3: true,
+    );
+    return baseTheme.copyWith(
+      // TODO: Handle fonts dependency
+      textTheme: GoogleFonts.robotoTextTheme(baseTheme.textTheme),
+    );
+  }
 }
