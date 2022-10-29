@@ -15,12 +15,14 @@ class WalletRepository {
             'https://files.gitbook.com/v0/b/gitbook-legacy-files/o/spaces%2F-LJJeCjcLrr53DcT1Ml7%2Favatar.png?alt=media'
           ]));
 
+  WalletConnect get walletConnector => _walletConnector;
+
   Future<void> connect(void Function(String) handleUri) async {
     if (!_walletConnector.connected) {
       try {
         // TODO: chainID
-        final SessionStatus session =
-            await _walletConnector.createSession(onDisplayUri: handleUri);
+        final SessionStatus session = await _walletConnector.createSession(
+            onDisplayUri: handleUri, chainId: 80001);
         debugPrint(
             "Session created with ${session.accounts[0]} on chain ${session.chainId}");
         // _walletConnector.a
@@ -31,10 +33,17 @@ class WalletRepository {
     }
   }
 
-  Credentials getCredentials() {
-    final ethProvider =
-        EthereumWalletConnectProvider(_walletConnector, chainId: 80001);
-    return WalletConnectEthereumCredentials(provider: ethProvider);
+  EthereumWalletConnectProvider get ethProvider {
+    return EthereumWalletConnectProvider(_walletConnector, chainId: 80001);
+  }
+
+  Credentials getCredentials(EthereumWalletConnectProvider ethProvider) {
+    // final ethProvider =
+    //     EthereumWalletConnectProvider(_walletConnector, chainId: 80001);
+    final ethCredentials =
+        WalletConnectEthereumCredentials(provider: ethProvider);
+
+    return ethCredentials;
   }
 
   Future<void> disconnect() async {

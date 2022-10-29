@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:nft_domains_dapp/app/authentication/bloc/authentication_bloc.dart';
 import 'package:nft_domains_dapp/features/wallet/wallet_repository.dart';
 
 import 'login/login.dart';
@@ -16,7 +17,12 @@ class App extends StatelessWidget {
     return RepositoryProvider.value(
         value: walletRepository,
         // TODO: will be AuthBloc
-        child: AppView());
+        child: BlocProvider(
+          create: (_) => AuthenticationBloc(
+            walletRepository: walletRepository,
+          ),
+          child: AppView(),
+        ));
   }
 }
 
