@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nft_domains_dapp/app/home/home.dart';
+import 'package:nft_domains_dapp/features/domain_service/domain_service.dart';
 import 'package:nft_domains_dapp/features/wallet/wallet_repository.dart';
 import 'package:provider/provider.dart';
 import 'authentication/authentication.dart';
@@ -10,16 +11,20 @@ import 'domain_register/domain_register.dart';
 import 'login/login.dart';
 
 class App extends StatelessWidget {
-  App({super.key, required this.walletRepository})
+  App({super.key, required this.walletRepository, required this.domainService})
       : _authInfo = AuthInfo(walletRepository: walletRepository);
 
   final WalletRepository walletRepository;
+  final DomainService domainService;
   final AuthInfo _authInfo;
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider.value(
-        value: walletRepository,
+    return MultiRepositoryProvider(
+        providers: [
+          RepositoryProvider.value(value: walletRepository),
+          RepositoryProvider.value(value: domainService),
+        ],
         child: ChangeNotifierProvider<AuthInfo>.value(
           value: _authInfo,
           child: MaterialApp.router(
@@ -48,24 +53,24 @@ class App extends StatelessWidget {
             )
           ])
     ],
-    // redirect: (context, state) {
-    //   final bool isAuthenticated =
-    //       _authInfo.status == AuthenticationStatus.authenticated;
-    //   final bool loggingIn = state.subloc == '/login';
-    //   if (!isAuthenticated) {
-    //     return loggingIn ? null : '/login';
-    //   }
+    redirect: (context, state) {
+      final bool isAuthenticated =
+          _authInfo.status == AuthenticationStatus.authenticated;
+      final bool loggingIn = state.subloc == '/login';
+      if (!isAuthenticated) {
+        return loggingIn ? null : '/login';
+      }
 
-    //   // if the user is logged in but still on the login page, send them to
-    //   // the home page
-    //   if (loggingIn) {
-    //     return '/';
-    //   }
+      // if the user is logged in but still on the login page, send them to
+      // the home page
+      if (loggingIn) {
+        return '/';
+      }
 
-    //   return null;
-    //   // TODO: handle guest
-    // },
-    // refreshListenable: _authInfo,
+      return null;
+      // TODO: handle guest
+    },
+    refreshListenable: _authInfo,
   );
 
   ThemeData _buildTheme() {
