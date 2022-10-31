@@ -26,4 +26,15 @@ class DomainService {
       return e.toString();
     }
   }
+
+  Future<String> setRecord(
+      Credentials credentials, String domain, String record) async {
+    try {
+      final result = await contractProvider.setRecord(domain, record,
+          credentials: credentials);
+      return result;
+    } catch (e) {
+      return e.toString();
+    }
+  }
 }

@@ -57,14 +57,15 @@ class _DomainRegisterPageState extends State<DomainRegisterPage> {
                             final DomainService service =
                                 RepositoryProvider.of<DomainService>(context);
 
-                            final Future<String> result =
-                                service.register(credentials, _domainName);
-                            await launchUrlString(
-                                wallet.walletConnector.session.toUri(),
-                                mode: LaunchMode.externalApplication);
-                            result.then((value) {
-                              print(value);
-                            });
+                            final String result = await service.register(
+                                credentials, _domainName);
+                            print(result);
+
+                            // final String recordResult = await service.setRecord(
+                            //     credentials, _domainName, "Fucking Record");
+
+                            // print("Record Result: $recordResult");
+
                             setState(() {
                               _domainName = "";
                             });
