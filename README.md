@@ -1,17 +1,6 @@
-# nft_domains_dapp
+# NFT Domains DAPP
 
-A new Flutter project.
+Simple Flutter project to connect metamask wallet and use nft domains smart contract service.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-# nft_domains_dapp
+## NFT Domains Contract
+- [NFT Domains Solidity](https://github.com/AhmetSBulbul/nft-domain-service)
